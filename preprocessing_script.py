@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+#Kaustubh Dwivedi
+#this file is for gears
 """
 create_gear_manifest.py
 
@@ -172,3 +174,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
