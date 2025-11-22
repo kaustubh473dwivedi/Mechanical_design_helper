@@ -1,0 +1,106 @@
+use_heuristics_if_missing: true
+log_missing_tables: true
+
+output_dir: "./output_nuts_and_bolts"
+log_level: "INFO"
+
+# ------------------------------
+# Inline tables (override CSV)
+# ------------------------------
+tables:
+
+  thread_pitch: {}
+  tensile_stress_area: {}
+  bolt_grades: {}
+  nut_grades: {}
+  proof_load: {}
+  yield_strength: {}
+  ultimate_strength: {}
+  torque_coefficients: {}
+  thread_engagement_min: {}
+  material_modulus: {}
+  density: {}
+  coating_friction: {}
+
+# ------------------------------
+# Paths to CSV files (if exist)
+# ------------------------------
+table_files:
+  thread_pitch:         "./tables_nuts/thread_pitch.csv"
+  tensile_stress_area:  "./tables_nuts/tensile_stress_area.csv"
+  bolt_grades:          "./tables_nuts/bolt_grades.csv"
+  nut_grades:           "./tables_nuts/nut_grades.csv"
+  proof_load:           "./tables_nuts/proof_load.csv"
+  yield_strength:       "./tables_nuts/yield_strength.csv"
+  ultimate_strength:    "./tables_nuts/ultimate_strength.csv"
+  torque_coefficients:  "./tables_nuts/torque_coefficients.csv"
+  thread_engagement_min: "./tables_nuts/thread_engagement_min.csv"
+  material_modulus:     "./tables_nuts/material_modulus.csv"
+  density:              "./tables_nuts/density.csv"
+  coating_friction:     "./tables_nuts/coating_friction.csv"
+
+# ------------------------------
+# Defaults / heuristics
+# ------------------------------
+defaults:
+
+  # Metric thread pitch fallback (mm)
+  metric_pitch_default:
+    M3: 0.5
+    M4: 0.7
+    M5: 0.8
+    M6: 1.0
+    M8: 1.25
+    M10: 1.5
+    M12: 1.75
+    M16: 2.0
+    M20: 2.5
+    M24: 3.0
+
+  # Tensile stress area fallbacks (mm^2)
+  # As defined approximately from ISO 898-1
+  tensile_stress_area_default:
+    M4: 8.78
+    M5: 14.2
+    M6: 20.1
+    M8: 36.6
+    M10: 58.0
+    M12: 84.3
+    M16: 157.0
+    M20: 245.0
+    M24: 353.0
+
+  # Bolt material grades (ISO 898-1)
+  bolt_grade_defaults:
+    "8.8":
+      yield_MPa: 640
+      tensile_MPa: 800
+    "10.9":
+      yield_MPa: 940
+      tensile_MPa: 1040
+    "12.9":
+      yield_MPa: 1100
+      tensile_MPa: 1220
+
+  nut_grade_defaults:
+    "8": {proof_load_MPa: 600}
+    "10": {proof_load_MPa: 940}
+    "12": {proof_load_MPa: 1100}
+
+  torque_coefficient_default:
+    uncoated: 0.18
+    zinc_plated: 0.20
+    moly_lube: 0.10
+
+  material_modulus_default:
+    steel: 210000   # MPa
+    stainless: 193000
+
+  thread_engagement_defaults:
+    steel_to_steel: 1.0    # 1 × major diameter
+    steel_to_aluminum: 2.0
+
+  friction_coeff_default:
+    dry: 0.20
+    lubricated: 0.12
+    coated: 0.15

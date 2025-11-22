@@ -1,0 +1,64 @@
+# config.yaml
+# Hybrid config: inline tables OR CSV file paths. If inline table values present they override CSV.
+# If neither exist, generator falls back to built-in heuristics.
+
+use_heuristics_if_missing: true
+log_missing_tables: true
+
+# provenance (optional)
+source_pdf: "/mnt/data/Roadmap_Gear Design.pdf"
+samples: 4000
+# Inline tables (prefer these if populated)
+# Format: for mapping tables (like Lewis Y) use "z: Y" mapping.
+# For numeric sequences (like Kv vs speed) you can provide a simple mapping.
+tables:
+
+  Lewis_Y: {}                # example: {12: 0.29, 13: 0.295, 14: 0.30}
+  Geometry_J: {}             # can be nested, but simplest: "pinion_teeth,ratio: J" or provide CSV instead
+  Yn: {}                     # e.g. {"1e4": 1.35, "1e7": 1.0}
+  Yz: {}                     # reliability factor mapping, e.g. {95: 1.1, 99: 1.25}
+  Ze: {}                     # elastic coefficient mapping by material pairs or hardness
+  I: {}                      # contact geometry factor table (prefer CSV for this)
+  Zn: {}                     # contact stress cycle factor mapping
+  Zr: {}                     # contact reliability mapping
+  Ko: {}                     # overload factors keyed by application severity
+  Kv: {}                     # dynamic factor table keyed by Qv or speed intervals
+  Ks: {}                     # size factor table or mapping
+  Km: {}                     # load-distribution factor mapping
+  Helical_overlap: {}        # optional overlap / contact-ratio tables
+  Helix_correction: {}       # helix correction factors (if available)
+  Worm_tables: {}            # optional worm-gear specific tables (lead-angle etc.)
+
+# File paths to CSVs (used if inline tables above are empty).
+# Each CSV should be a simple table; script tries to detect appropriate columns.
+table_files:
+  Lewis_Y: "/mnt/data/gear_extraction_output/lewis_Y.csv"
+  Geometry_J: "/mnt/data/gear_extraction_output/geometry_J.csv"
+  Yn: "/mnt/data/gear_extraction_output/Yn.csv"
+  Yz: "/mnt/data/gear_extraction_output/Yz.csv"
+  Ze: "/mnt/data/gear_extraction_output/Ze.csv"
+  I: "/mnt/data/gear_extraction_output/I.csv"
+  Zn: "/mnt/data/gear_extraction_output/Zn.csv"
+  Zr: "/mnt/data/gear_extraction_output/Zr.csv"
+  Ko: "/mnt/data/gear_extraction_output/Ko.csv"
+  Kv: "/mnt/data/gear_extraction_output/Kv.csv"
+  Ks: "/mnt/data/gear_extraction_output/Ks.csv"
+  Km: "/mnt/data/gear_extraction_output/Km.csv"
+  Helical_overlap: "/mnt/data/gear_extraction_output/helical_overlap.csv"
+  Helix_correction: "/mnt/data/gear_extraction_output/helix_correction.csv"
+  Worm_tables: "/mnt/data/gear_extraction_output/worm_tables.csv"
+
+# sensible defaults (used by heuristics when nothing is provided)
+defaults:
+  lewis_Y_default_min: 0.06
+  zE_default: 1900.0
+  zN_default_low_cycles: 1.0
+  dynamic_default_breakpoints:
+    - {speed_rpm: 200, Kv: 1.0}
+    - {speed_rpm: 1000, Kv: 1.1}
+    - {speed_rpm: 2000, Kv: 1.2}
+    - {speed_rpm: 4000, Kv: 1.35}
+
+# logging & output locations
+output_dir: "./output_final_gears"
+log_level: "INFO"
